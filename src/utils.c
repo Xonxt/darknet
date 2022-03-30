@@ -260,7 +260,9 @@ void find_replace_extension(char *str, char *orig, char *rep, char *output)
 
 void replace_image_to_label(const char* input_path, char* output_path)
 {
-    //find_replace(input_path, "/images/train2017/", "/labels/train2017/", output_path);    // COCO
+    strcpy(output_path, input_path);
+
+    //find_replace(output_path, "/images/train2017/", "/labels/train2017/", output_path);    // COCO
     //find_replace(output_path, "/images/val2017/", "/labels/val2017/", output_path);        // COCO
     find_replace(output_path, "/JPEGImages/", "/labels/", output_path);    // PascalVOC
     //find_replace(output_path, "\\images\\train2017\\", "\\labels\\train2017\\", output_path);    // COCO
@@ -294,14 +296,14 @@ void replace_image_to_label(const char* input_path, char* output_path)
     find_replace_extension(output_path, ".TIFF", ".txt", output_path);
 
     // Check file ends with txt:
-    //if(strlen(output_path) > 4) {
-    //    char *output_path_ext = output_path + strlen(output_path) - 4;
-    //    if( strcmp(".txt", output_path_ext) != 0){
-    //        fprintf(stderr, "Failed to infer label file name (check image extension is supported): %s \n", output_path);
-    //    }
-    //}else{
-    //    fprintf(stderr, "Label file name is too short: %s \n", output_path);
-    //}
+    if(strlen(output_path) > 4) {
+        char *output_path_ext = output_path + strlen(output_path) - 4;
+        if( strcmp(".txt", output_path_ext) != 0){
+            fprintf(stderr, "Failed to infer label file name (check image extension is supported): \n\tinput: %s \n\toutput: %s\n", input_path, output_path);
+        }
+    }else{
+        fprintf(stderr, "Label file name is too short: \n\tinput: %s \n\toutput: %s\n", input_path, output_path);
+    }
 }
 
 float sec(clock_t clocks)
